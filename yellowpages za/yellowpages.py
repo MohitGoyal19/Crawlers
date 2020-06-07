@@ -142,7 +142,33 @@ def main():
         'Yoga Center'
     ]
 
-    output = pd.read_excel('Data.xlsx')
+    output = pd.DataFrame(columns=[
+         'Sub Category',
+         'Company / Business Name',
+         'Direct Link to Company Website',
+         'Products / Services',
+        'Phone Number',
+        'Email Address',
+        'Physical Address',
+        'Working Hours (Monday - Start)',
+        'Working Hours (Monday - End)',
+        'Working Hours (Tuesday - Start)',
+        'Working Hours (Tuesday - End)',
+        'Working Hours (Wednesday - Start)',
+        'Working Hours (Wednesday - End)',
+        'Working Hours (Thursday - Start)',
+        'Working Hours (Thursday - End)',
+        'Working Hours (Friday - Start)',
+        'Working Hours (Friday - End)',
+        'Working Hours (Saturday - Start)',
+        'Working Hours (Saturday - End)',
+        'Working Hours (Sunday - Start)',
+        'Working Hours (Sunday - End)',
+        'City',
+        'Image / Logo',
+        'Amenities and Features',
+        'Company Description / About'
+    ])
 
     url = 'https://www.yellowpages.co.za/search?what='
 
