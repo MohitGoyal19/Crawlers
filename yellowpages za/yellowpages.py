@@ -23,7 +23,7 @@ def get_data(link, cat):
         item = get_data(link, cat)
         return item
 
-    page = bs(response.text, 'html.parser')
+    page = bs(response.text, 'html5lib')
 
     data = json.loads(page.find('script', {'type': 'application/ld+json'}).text)
 
@@ -172,7 +172,7 @@ def main():
 
     url = 'https://www.yellowpages.co.za/search?what='
 
-    for cat in cats[3:]:
+    for cat in cats:
         cat_link = url + cat.replace(' ', '+').replace('&', '%26')
         pages = ceil(get_pages(cat_link)/20)
 
