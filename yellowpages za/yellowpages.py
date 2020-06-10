@@ -39,7 +39,7 @@ def get_data(link, cat):
 
     item = [
         cat,
-        page.find('h2' , {'class': 'yext-name'}).text,
+        page.find('h2' , {'class': 'yext-name'}).text if page.find('h2' , {'class': 'yext-name'}) else '',
         page.find('a', {'class': 'yext-url-website'}).text.strip() if page.find('a', {'class': 'yext-url-website'}) else '',
         page.find('span', {'class': 'yext-categories'}).text.replace('✔', '').strip() + ', ' + ', '.join([prod.text.replace('✔', '').strip() for prod in page.find_all('span', {'class': 'yext-keywords'})]),
         page.find('a', {'class': 'yext-phone'}).text.strip() if page.find('a', {'class': 'yext-phone'}) else '',
@@ -59,7 +59,7 @@ def get_data(link, cat):
         working_hours['Saturday']['closes'],
         working_hours['Sunday']['opens'],
         working_hours['Sunday']['closes'],
-        page.find('p', {'class': 'yext-city'}).text,
+        page.find('p', {'class': 'yext-city'}).text if page.find('p', {'class': 'yext-city'}) else '',
         page.find('img', {'class': 'yext-image-logo'}).get('data-src') if 'http' in page.find('img', {'class': 'yext-image-logo'}).get('data-src') else 'https://www.yellowpages.co.za' + page.find('img', {'class': 'yext-image-logo'}).get('data-src').lstrip('..'),
         page.find('meta', {'name': 'description'}).get('content'),
         page.find('span', {'class': 'yext-description'}).text if page.find('span', {'class': 'yext-description'}) else ''
