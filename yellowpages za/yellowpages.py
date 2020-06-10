@@ -174,7 +174,7 @@ def main():
 
     url = 'https://www.yellowpages.co.za/search?what='
 
-    for cat in cats:
+    for cat in cats[23:]:
         cat_link = url + cat.replace(' ', '+').replace('&', '%26')
         pages = ceil(get_pages(cat_link)/20)
 
