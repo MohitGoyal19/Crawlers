@@ -186,7 +186,7 @@ def main():
                 output.loc[x] = get_data(link, cat)
                 print(output.loc[x])
 
-        output.to_excel('Data.xlsx', index=None)
+        output.to_excel('Data 2.xlsx', index=None)
 
     return
 
