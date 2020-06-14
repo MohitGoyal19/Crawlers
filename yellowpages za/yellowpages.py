@@ -25,7 +25,7 @@ def get_data(link, cat):
 
     page = bs(response.text, 'html5lib')
 
-    data = json.loads(page.find('script', {'type': 'application/ld+json'}).text) if page.find('script', {'type': 'application/ld+json'}).text else ''
+    data = json.loads(page.find('script', {'type': 'application/ld+json'}).text) if page.find('script', {'type': 'application/ld+json'}) else ''
     if not data:
         return [None]*25
 
