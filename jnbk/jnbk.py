@@ -18,7 +18,7 @@ def get_data(url, output):
             rear_rotor = ' ^ '.join([rotor.text.strip() for rotor in row.find_all('td')[6].find_all('a')]) + ' | ' + ' | '.join([rotor.text.strip() for rotor in row.find_all('td')[6].find_all('span')])
             rear_brake = ' ^ '.join([rotor.text.strip() for rotor in row.find_all('td')[7].find_all('a')]) + ' | ' + ' | '.join([rotor.text.strip() for rotor in row.find_all('td')[7].find_all('span')])
             
-            year_start, year_end = (2000+int(row.find_all('td')[0].text.strip().split('~')[0].split('.')[1]), 2000+int(row.find_all('td')[0].text.strip().split('~')[1].split('.')[1])) if len(row.find_all('td')[0].text.strip().split('~')) > 1 else (2000+int(row.find_all('td')[0].text.strip().split('~')[0].split('.')[1]), 2020)
+            year_start, year_end = (2000+int(row.find_all('td')[0].text.strip().split('~')[0].split('.')[1]), 2000+int(row.find_all('td')[0].text.strip().split('~')[1].split('.')[1])) if row.find_all('td')[0].text.strip().split('~')[1] else (2000+int(row.find_all('td')[0].text.strip().split('~')[0].split('.')[1]), 2020)
             for year in range(year_start, year_end+1):
                 x = len(output)
                 output.loc[x] = {
