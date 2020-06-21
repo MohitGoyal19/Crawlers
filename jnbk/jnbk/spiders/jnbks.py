@@ -11,7 +11,7 @@ class JnbkSpider(scrapy.Spider):
     def start_requests(self):
         url = 'http://www.jnbk-brakes.com/catalogue/cars'
         
-        yield scrapy.Request(url=url, callback=self.get_makes, dont_filter=True)
+        yield scrapy.Request(url=url, callback=self.get_makes)
 
     
     def get_makes(self, response):
@@ -20,7 +20,7 @@ class JnbkSpider(scrapy.Spider):
         for make in makes:
             url = f'http://www.jnbk-brakes.com/application/get_application_models/{make}/1/0'
             
-            yield scrapy.Request(url=url, headers=self.headers, callback=self.get_models, dont_filter=True)
+            yield scrapy.Request(url=url, headers=self.headers, callback=self.get_models)
 
 
     def get_models(self, response):
@@ -29,14 +29,14 @@ class JnbkSpider(scrapy.Spider):
         for model in models:
             url = 'http://www.jnbk-brakes.com/application/get_applications/' + model.strip('\\').strip('"').strip('\\') + '/1'
 
-            yield scrapy.Request(url=url, headers=self.headers, callback=self.get_brakes, dont_filter=True)
+            yield scrapy.Request(url=url, headers=self.headers, callback=self.get_brakes)
 
     
     def get_brakes(self, response):
         brakes = response.css('table a::attr(href)').getall()
 
         for brake in brakes:
-            yield scrapy.Request(url=brake, headers=self.headers, callback=self.parse, dont_filter=True)
+            yield scrapy.Request(url=brake, headers=self.headers, callback=self.parse)
 
 
     def parse(self, response):
