@@ -1,8 +1,10 @@
 # -*- coding: utf-8 -*-
 
 from bs4 import BeautifulSoup as bs
+import math
 import pandas as pd
 import random
+import re
 import requests
 from time import sleep
 
@@ -62,7 +64,7 @@ def get_app_details(prod_id, category):
 
 
 def get_data(df, link):
-    response = requests.get(link)
+    response = request(link)
     page = bs(response.text, 'html.parser')
 
     make = page.find('input', {'id': 'make'}).get('value')
@@ -89,6 +91,7 @@ def get_data(df, link):
     x = len(df)
     df.loc[x] = [make, model, year, engine, category, prod_no, name, app_sum, app_notes, desc, app_details, spec, oe, main_url, link, image1, image2]
     print(df.loc[x])
+    df.to_excel('Dorman_Data.xlsx', index=None)
 
     return df
 
@@ -96,10 +99,15 @@ def get_data(df, link):
 def get_products(df, year):
     url = f'https://www.dormanproducts.com/gsearch.aspx?year={year}&origin=YMM'
 
-    products = bs(request(url).text, 'html.parser').find('span', {'id': 'lblResultCount'}).text
-    print(products, year)
-    if not products:
-        print('khali hai')
+    product_count = bs(request(url).text, 'html.parser').find('span', {'id': 'lblResultCount'}).text
+    pages = math.ceil(product_count/100)
+
+    for start in range(pages+1):
+        url = f'https://www.dormanproducts.com/gsearch.aspx?year={year}&origin=YMM&start={start*100}&num=100'
+        products = ['https://www.dormanproducts.com/' + link.get('href') for link in bs(request(url).text, 'html.parser').find_all('a', {'href': re.compile('rptDetails\_ctl\d+\_alinkProductName')})]
+
+        for product in products:
+            df = get_data(df, link) 
 
     return df
 
