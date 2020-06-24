@@ -99,7 +99,7 @@ def get_data(df, link):
 def get_products(df, year):
     url = f'https://www.dormanproducts.com/gsearch.aspx?year={year}&origin=YMM'
 
-    product_count = bs(request(url).text, 'html.parser').find('span', {'id': 'lblResultCount'}).text
+    product_count = int(bs(request(url).text, 'html.parser').find('span', {'id': 'lblResultCount'}).text)
     pages = math.ceil(product_count/100)
 
     for start in range(pages+1):
