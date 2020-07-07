@@ -9,6 +9,7 @@ import requests
 from time import sleep
 
 def request(url):
+    sleep(120)
     headers = {
         'host': 'www.dormanproducts.com',
         'user-agent': 'Googlebot'
@@ -55,7 +56,7 @@ def text_format(tag):
 
 def get_app_details(prod_id, category):
     link = 'https://www.dormanproducts.com/itemdetailapp.aspx?ProductID={}&PartType={}'.format(prod_id, category)
-    page = bs(request(link).text, 'html.parser')
+    page = bs(requests.get(link).text, 'html.parser')
 
     det_text = []
     if not page.find('a', {'id': 'pagingBottom_nextButton'}):
@@ -65,7 +66,7 @@ def get_app_details(prod_id, category):
         link = 'https://www.dormanproducts.com/itemdetailapp.aspx?ProductID={}&PartType={}&start={}&num=50'
         page_no = 0
         while True:
-            page = bs(request(link.format(prod_id, category, page_no*50)).text, 'html.parser')
+            page = bs(requests.get(link.format(prod_id, category, page_no*50)).text, 'html.parser')
             rows.append(page.find_all('tr', {'class': 'detail-app-row'}))
             page_no += 1
             if not page.find('a', {'id': 'pagingBottom_nextButton'}):
@@ -86,7 +87,7 @@ def get_app_details(prod_id, category):
 
 def get_data(df, link):
     print('Getting Product......')
-    response = request(link)
+    response = requests.get(link)
     page = bs(response.text, 'html.parser')
 
     make = page.find('input', {'id': 'make'}).get('value')
