@@ -55,7 +55,7 @@ def text_format(tag):
 
 
 def get_app_details(prod_id, category):
-    link = 'https://www.dormanproducts.com/itemdetailapp.aspx?ProductID={}&PartType={}'.format(prod_id, category)
+    link = 'https://www.dormanproducts.com/itemdetailapp.aspx?ProductID={}&PartType={}'.format(prod_id, category).replace(' ', '+')
     page = bs(requests.get(link).text, 'html.parser')
 
     det_text = []
@@ -66,8 +66,9 @@ def get_app_details(prod_id, category):
         link = 'https://www.dormanproducts.com/itemdetailapp.aspx?ProductID={}&PartType={}&start={}&num=50'
         page_no = 0
         while True:
+            print(link.format(prod_id, category, page_no*50))
             page = bs(requests.get(link.format(prod_id, category, page_no*50)).text, 'html.parser')
-            rows.append(page.find_all('tr', {'class': 'detail-app-row'}))
+            rows.extend(page.find_all('tr', {'class': 'detail-app-row'}))
             page_no += 1
             if not page.find('a', {'id': 'pagingBottom_nextButton'}):
                 break
@@ -87,14 +88,14 @@ def get_app_details(prod_id, category):
 
 def get_data(df, link):
     print('Getting Product......')
-    response = requests.get(link)
+    response = request(link)
     page = bs(response.text, 'html.parser')
 
     make = page.find('input', {'id': 'make'}).get('value')
     model = page.find('input', {'id': 'model'}).get('value')
     year = page.find('input', {'id': 'year'}).get('value')
     engine = ''
-    category = page.find('input', {'id': 'parttype'}).get('value')
+    category = page.find('span', {'id': 'lblPartTypeName'}).text
     prod_no = page.find('span', {'id': 'lblProductName'}).text
     name = page.find('span', {'id': 'lblProductDesc'}).text
     app_sum = page.find('div', {'id': 'divAppSummary'}).text.strip().lstrip('Application Summary:').strip()
@@ -113,7 +114,7 @@ def get_data(df, link):
 
     for app in app_details:
         x = len(df)
-        df.loc[x] = [app['make'], app['model'], app['year'], engine, category, prod_no, name, app_sum, app_notes, desc, app['Applications'], spec, oe, main_url, link, image1, image2]
+        df.loc[x] = [app['Make'], app['Model'], app['Year'], engine, category, prod_no, name, app_sum, app_notes, desc, app['Applications'], spec, oe, main_url, link, image1, image2]
         print(df.loc[x])
     df.to_excel('Dorman_Data.xlsx', index=None)
 

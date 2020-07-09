@@ -10,9 +10,10 @@ def main():
         if not maker in frames.keys():
             frames[maker] = pd.DataFrame(columns=df.columns)
         frames[maker].loc[len(frames[maker])] = df.loc[x]
+        print(x, 'out of', len(df))
 
     for key, value in frames.items():
-        value.to_excel(key+'.xlsx', headers=None)
+        value.to_excel('jnbk/'+key+'.xlsx', headers=None)
 
     return
 
