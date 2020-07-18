@@ -13,7 +13,7 @@ def main():
         print(x, 'out of', len(df))
 
     for key, value in frames.items():
-        value.to_excel('jnbk/'+key+'.xlsx', headers=None)
+        value.to_excel('jnbk/'+key+'.xlsx', index=None)
 
     return
 

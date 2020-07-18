@@ -9,7 +9,7 @@ import requests
 from time import sleep
 
 def request(url):
-    sleep(120)
+    sleep(300)
     headers = {
         'host': 'www.dormanproducts.com',
         'user-agent': 'Googlebot'
@@ -62,6 +62,7 @@ def get_app_details(prod_id, category):
     if not page.find('a', {'id': 'pagingBottom_nextButton'}):
         rows = page.find_all('tr', {'class': 'detail-app-row'})
     else:
+        sleep(60)
         rows = []
         link = 'https://www.dormanproducts.com/itemdetailapp.aspx?ProductID={}&PartType={}&start={}&num=50'
         page_no = 0
@@ -142,9 +143,8 @@ def get_products(df, year):
 
 
 def main():
-    df = pd.DataFrame(columns=['Make', 'Model', 'Year', 'Engine', 'Brand/Category', 'Product Number', 'Product Name', 'Application Summary', 'Application Notes', 'Product Description', 'Detailed Applications', 'Product Specifications', 'OE Numbers', 'Main Url', 'Product Url', 'Image Url1', 'Image Url2'])
-    
-    for year in range(2021, 1914, -1):
+    df = pd.read_excel('Dorman_Data.xlsx')
+    for year in range(2020, 1914, -1):
         if not year in [1927, 1926, 1924, 1921, 1920, 1919, 1918, 1917, 1916]:
             df = get_products(df, year)
 
