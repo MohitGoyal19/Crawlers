@@ -9,6 +9,7 @@ import requests
 from time import sleep
 
 def request(url):
+    sleep(300)
     headers = {
         'host': 'www.dormanproducts.com',
         'user-agent': 'Googlebot',
