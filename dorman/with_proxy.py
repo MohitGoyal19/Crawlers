@@ -11,7 +11,8 @@ from time import sleep
 def request(url):
     headers = {
         'host': 'www.dormanproducts.com',
-        'user-agent': 'Googlebot'
+        'user-agent': 'Googlebot',
+        'origin': 'www.dormanproducts.com'
     }
     proxies = get_proxies()
 
@@ -129,17 +130,22 @@ def get_products(df, year):
         products = ['https://www.dormanproducts.com/' + link.get('href') for link in bs(request(url).text, 'html.parser').find_all('a', {'id': re.compile('rptDetails\_ctl\d+\_alinkProductName')})]
 
         for product in products:
-            df = get_data(df, product) 
+            #df = get_data(df, product)
+            df.loc[len(df)] = [product]
+            print(df.loc[len(df)-1])
+            
+        df.to_excel('Links.xlsx', index=None)
 
     return df
 
 
 def main():
+    links - pd.DataFrame(columns=['Link'])
     df = pd.DataFrame(columns=['Make', 'Model', 'Year', 'Engine', 'Brand/Category', 'Product Number', 'Product Name', 'Application Summary', 'Application Notes', 'Product Description', 'Detailed Applications', 'Product Specifications', 'OE Numbers', 'Main Url', 'Product Url', 'Image Url1', 'Image Url2'])
     
     for year in range(2021, 1914, -1):
         if not year in [1927, 1926, 1924, 1921, 1920, 1919, 1918, 1917, 1916]:
-            df = get_products(df, year)
+            links = get_products(links, year)
 
 
     #df.to_excel('Sample.xlsx', index=None)
